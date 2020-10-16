@@ -56,6 +56,10 @@ class AddNewViewController: UIViewController {
         
         //Setting the add button in the navigation bar.
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addTapped))
+        
+        // Setting up to add keyboard observer functionality.
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+           NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     func showError(_ message: String, choice: Int) {
@@ -73,7 +77,14 @@ class AddNewViewController: UIViewController {
     func collectDataFromForm() {
         
         if ((vendorNameTextField.text?.isEmpty) != nil) && vendorNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+            showError("Error, please add a vendor name!", choice: 0)
+        } else {
+            nameErrorLabl.alpha = 0
             if ((expenseAmountTextField.text?.isEmpty) != nil) && expenseAmountTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+                showError("Error, please add a expense amount!", choice: 1)
+            } else {
+                
+                expenseErrorLabl.alpha = 0
                 
                 let formatter = DateFormatter()
                 formatter.dateStyle = .short
@@ -86,13 +97,11 @@ class AddNewViewController: UIViewController {
                     let stringDate = formatter.string(from: date!)
                     print("name: \(name ?? ""), amount: \(amount), date: \(stringDate)", "category: \(category ?? "")")
                     expense = Expense(vendorName: name, expenseDate: stringDate, category: category, expenseAmount: amount)
+                    
+                    // Run the save data function
+                    saveData(expense: expense)
                 }
-                
-            } else {
-                showError("Error, please add a expense amount!", choice: 1)
             }
-        } else {
-            showError("Error, please add a vendor name!", choice: 0)
         }
     }
     
@@ -103,7 +112,6 @@ class AddNewViewController: UIViewController {
     @objc func addTapped() {
         print("Add button tapped!")
         collectDataFromForm()
-        saveData(expense: expense)
     }
     
     func updateTextField() -> String? {
@@ -114,6 +122,21 @@ class AddNewViewController: UIViewController {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
+    }
+    
+    // Keyboard functions for scroll when textfield selected.
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
     }
 
     /*
