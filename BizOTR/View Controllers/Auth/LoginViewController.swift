@@ -16,6 +16,8 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var errorLbl: UILabel!
+    
+    let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,10 +85,11 @@ class LoginViewController: UIViewController {
                 self.errorLbl.text = error!.localizedDescription
                 self.errorLbl.alpha = 1
             } else {
+                guard let userID = Auth.auth().currentUser?.uid else { return }
                 self.transitionToYearlyExpenseVC()
                 
-                let defaults = UserDefaults.standard
-                defaults.set(true, forKey: "isLogin")
+                self.defaults.set(userID, forKey: "uid")
+                self.defaults.set(true, forKey: "isLogin")
             }
         }
     }

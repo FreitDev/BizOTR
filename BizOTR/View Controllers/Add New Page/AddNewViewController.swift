@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FirebaseFirestore
+import Firebase
 
 class AddNewViewController: UIViewController {
 
@@ -20,15 +22,20 @@ class AddNewViewController: UIViewController {
     var categoryOptions = ["Supplies", "Food", "Gas"]
     var expense: Expense!
     var name: String!
-    var category: String!
+    var category = "Supplies"
     var amount = 0
     var date: Date!
+    var stringDate = String()
+    var uid: String!
     
     var numberformatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         return formatter
     }()
+    
+    let db = Firestore.firestore()
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +60,11 @@ class AddNewViewController: UIViewController {
         // Setup the error labels
         nameErrorLabl.alpha = 0
         expenseErrorLabl.alpha = 0
+        
+        // Set the uid as long as it is passed from login or sign in
+        if let userId = defaults.string(forKey: "uid") {
+            uid = userId
+        }
         
         //Setting the add button in the navigation bar.
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addTapped))
@@ -94,19 +106,40 @@ class AddNewViewController: UIViewController {
                 // Getting the date from date picker
                 date = expenseDatePicker.date
                 if date != nil {
-                    let stringDate = formatter.string(from: date!)
+                    
+                    stringDate = formatter.string(from: date!)
                     print("name: \(name ?? ""), amount: \(amount), date: \(stringDate)", "category: \(category ?? "")")
-                    expense = Expense(vendorName: name, expenseDate: stringDate, category: category, expenseAmount: amount)
+                    
+                    //expense = Expense(vendorName: name, expenseDate: stringDate, category: category, expenseAmount: amount)
+                    
+                    let expenseDict = [
+                            "name" : name! as String,
+                            "amount" : amount as Int,
+                            "date" : stringDate as String,
+                            "category" : category as String,
+                        "uid" : uid as String
+                        ] as [String : Any]
+                    
+                    saveData(expense: expenseDict)
                     
                     // Run the save data function
-                    saveData(expense: expense)
+                    //saveData(expense: expense)
                 }
             }
         }
     }
     
-    func saveData(expense: Expense) {
-        print("Saving data...")
+    func saveData(expense: [String: Any]) {
+        
+        print("Add expense process started...")
+        var ref: DocumentReference? = nil
+        ref = db.collection("expenses").addDocument(data: expense) { (error) in
+            if let err = error {
+                   print("Error adding document: \(err)")
+               } else {
+                   print("Document added with ID: \(ref!.documentID)")
+               }
+        }
     }
     
     @objc func addTapped() {
@@ -170,7 +203,7 @@ extension AddNewViewController: UIPickerViewDataSource, UIPickerViewDelegate {
             category = "Supplies"
         } else if row == 1 {
            category = "Food"
-        } else {
+        } else if row == 2 {
             category = "Gas"
         }
     }

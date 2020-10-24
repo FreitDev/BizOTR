@@ -15,25 +15,79 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
     @IBOutlet weak var ExpenseSheetYearNavLbl: UINavigationItem!
     @IBOutlet weak var tableView: UITableView!
     
-    var tempYear: String =  "2020"
-    var tempTotal: String = "$14,500"
-    var objects = ["test", "test1", "test2"]
+    var expenses = [Expense]()
+    var uid = String()
+    var totalExpenses = 0
+    
+    let db = Firestore.firestore()
+    let defaults = UserDefaults.standard
+    
+    var numberformatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        return formatter
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        setupElements()
         
-        SetLbls()
-        
-        tableView.delegate = self
-        tableView.dataSource = self
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
     }
     
-    func SetLbls() {
+    override func viewWillAppear(_ animated: Bool) {
+        expenses = [Expense]()
+        getDataFromFirestore()
+    }
+    
+    func getDataFromFirestore() {
+        // Fetch the expenses for this user....
         
-        ExpenseTotalLbl.text = tempTotal
-        ExpenseSheetYearNavLbl.title = tempYear
+        let expenseRef = db.collection("expenses")
+    
+        // Create a query against the collection.
+        let query = expenseRef.whereField("uid", isEqualTo: uid)
+        
+            query.getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    //print("\(document.documentID) => \(document.data())")
+                    self.expenses.append(Expense(vendorName: document.get("name") as! String, expenseDate: document.get("date") as! String, category: document.get("category") as! String, expenseAmount: document.get("amount") as! Int, uid: document.get("uid") as! String))
+                    
+                    // Setting the total expenses
+                    self.totalExpenses += (document.get("amount") as! Int)
+                }
+                
+                // Create a method for this...
+                let updatedTotal = self.totalExpenses
+                print("Total: \(String(updatedTotal))")
+                self.ExpenseTotalLbl.text = self.getValue(amount: updatedTotal)
+                
+                // Trying to sort the expenses.
+                self.expenses = self.expenses.sorted(by: {
+                    $0.expenseDate.compare($1.expenseDate) == .orderedAscending
+                })
+                
+                
+                DispatchQueue.main.async {
+                    // We have to reload the tableview when we gather the expense data.
+                    self.tableView.reloadData()
+                }
+            }
+        }
+    }
+    
+    func setupElements() {
+        
+        // Set the uid as long as it is passed from login or sign in
+        if let userId = defaults.string(forKey: "uid") {
+            uid = userId
+        }
     }
     
 //    func fetchData() {
@@ -62,16 +116,24 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
 
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             // #warning Incomplete implementation, return the number of rows
-            return objects.count
+            return expenses.count
         }
 
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ExpenseTableViewCell
-            cell.vendorNameLbl.text! = objects[indexPath.row]
+            cell.vendorNameLbl.text! = expenses[indexPath.row].vendorName
+            cell.dateLbl.text! = expenses[indexPath.row].expenseDate
+            cell.categoryLbl.text! = expenses[indexPath.row].category
+            cell.expenseAmountLbl.text! = getValue(amount: expenses[indexPath.row].expenseAmount)
             
             return cell
         }
+    
+    func getValue(amount: Int) -> String {
+        let number = Double(amount/100) + Double(amount%100)/100
+        return numberformatter.string(from: NSNumber(value: number))!
+    }
 
         func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
             // Return false if you do not want the specified item to be editable.
@@ -80,7 +142,7 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
             if editingStyle == .delete {
-                objects.remove(at: indexPath.row)
+                expenses.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .fade)
             } else if editingStyle == .insert {
                 // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.

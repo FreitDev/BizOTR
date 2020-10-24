@@ -19,6 +19,8 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var signupButton: UIButton!
     @IBOutlet weak var errorLbl: UILabel!
     
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -105,6 +107,7 @@ class SignUpViewController: UIViewController {
                             self.showError("Error saving user data, please try again later")
                         }
                         print("User created successfully!")
+                        self.defaults.set(result!.user.uid, forKey: "uid")
                         self.transitionToYearlyExpenseVC()
                     }
                 }
