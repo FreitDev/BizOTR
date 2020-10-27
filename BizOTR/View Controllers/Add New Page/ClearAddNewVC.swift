@@ -12,9 +12,9 @@ extension AddNewViewController {
     
     func resetTextFields() {
     
-        expense = Expense(vendorName: "", expenseDate: "", category: "", expenseAmount: 0, uid: "")
         name = ""
         category = "Supplies"
+        categoryPickerView.selectRow(0, inComponent: 0, animated: true)
         amount = 0
         stringDate = String()
         

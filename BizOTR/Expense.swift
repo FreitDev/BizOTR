@@ -16,13 +16,15 @@ class Expense {
     var category: String
     var expenseAmount: Int
     var uid: String
+    var docId: String
     
-    init(vendorName: String, expenseDate: String, category: String, expenseAmount: Int, uid: String) {
+    init(vendorName: String, expenseDate: String, category: String, expenseAmount: Int, uid: String, docId: String) {
         self.vendorName = vendorName
         self.expenseDate = expenseDate
         self.category = category
         self.expenseAmount = expenseAmount
         self.uid = uid
+        self.docId = docId
     }
     
 }

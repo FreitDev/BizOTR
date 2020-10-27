@@ -11,10 +11,12 @@ import Foundation
 struct Constants {
     
     struct Storyboard {
-        
         static let yearlyExpenseViewController = "YearlyExpenseVC"
-        
     }
     
-    
+    struct Category {
+        static let supplies = "Supplies"
+        static let food = "Food"
+        static let gas = "Gas"
+    }
 }
