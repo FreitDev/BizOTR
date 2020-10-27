@@ -28,11 +28,11 @@
             </objects>
             <point key="canvasLocation" x="400.00000000000006" y="-40.178571428571423"/>
         </scene>
-        <!--Item-->
+        <!--Add-->
         <scene sceneID="HUH-C9-MQs">
             <objects>
                 <navigationController id="Bos-ov-bQb" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="AUs-nR-dhL"/>
+                    <tabBarItem key="tabBarItem" title="Add" id="AUs-nR-dhL"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="c1G-RY-tes">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -142,7 +142,7 @@
                             <constraint firstItem="xzB-GP-gS4" firstAttribute="leading" secondItem="JPM-KK-RGH" secondAttribute="leading" constant="20" id="g6U-ZU-8cV"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="Atq-Ss-Ilt"/>
+                    <tabBarItem key="tabBarItem" title="Home" id="Atq-Ss-Ilt"/>
                     <navigationItem key="navigationItem" title="Year" id="68T-tl-5ml"/>
                     <connections>
                         <outlet property="ExpenseSheetYearNavLbl" destination="68T-tl-5ml" id="0nk-DJ-p8N"/>
@@ -154,11 +154,11 @@
             </objects>
             <point key="canvasLocation" x="-1168.1159420289855" y="705.80357142857144"/>
         </scene>
-        <!--Item-->
+        <!--Settings-->
         <scene sceneID="bvC-g9-03B">
             <objects>
                 <navigationController id="Zcg-B3-s6Z" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="70M-7M-WEr"/>
+                    <tabBarItem key="tabBarItem" title="Settings" id="70M-7M-WEr"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="UXT-HX-bZB">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

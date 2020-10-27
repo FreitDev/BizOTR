@@ -18,6 +18,8 @@
 		F18F095D252FEF5E00CE70F9 /* AddNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18F095C252FEF5E00CE70F9 /* AddNewViewController.swift */; };
 		F1B39566252FC1670022FBB3 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B39565252FC1670022FBB3 /* SignUpViewController.swift */; };
 		F1B39569252FC17B0022FBB3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B39568252FC17B0022FBB3 /* LoginViewController.swift */; };
+		F1CAD305254759AF000C599B /* ClearAddNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CAD304254759AF000C599B /* ClearAddNewVC.swift */; };
+		F1CAD31F25479E6F000C599B /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CAD31E25479E6F000C599B /* Colors.swift */; };
 		F1F37E4D2512AE05004ED047 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F37E4C2512AE05004ED047 /* AppDelegate.swift */; };
 		F1F37E4F2512AE05004ED047 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F37E4E2512AE05004ED047 /* SceneDelegate.swift */; };
 		F1F37E512512AE05004ED047 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F37E502512AE05004ED047 /* ViewController.swift */; };
@@ -42,6 +44,8 @@
 		F18F095C252FEF5E00CE70F9 /* AddNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewViewController.swift; sourceTree = "<group>"; };
 		F1B39565252FC1670022FBB3 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		F1B39568252FC17B0022FBB3 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		F1CAD304254759AF000C599B /* ClearAddNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearAddNewVC.swift; sourceTree = "<group>"; };
+		F1CAD31E25479E6F000C599B /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		F1F37E492512AE05004ED047 /* BizOTR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BizOTR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1F37E4C2512AE05004ED047 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F1F37E4E2512AE05004ED047 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -112,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				F18F095C252FEF5E00CE70F9 /* AddNewViewController.swift */,
+				F1CAD304254759AF000C599B /* ClearAddNewVC.swift */,
 			);
 			path = "Add New Page";
 			sourceTree = "<group>";
@@ -121,6 +126,7 @@
 			children = (
 				F18F0950252FCFFA00CE70F9 /* Constants.swift */,
 				F18F0953252FCFFF00CE70F9 /* Utilities.swift */,
+				F1CAD31E25479E6F000C599B /* Colors.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -301,8 +307,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				F13B26072534057E004E34A7 /* Expense.swift in Sources */,
+				F1CAD31F25479E6F000C599B /* Colors.swift in Sources */,
 				F18F095D252FEF5E00CE70F9 /* AddNewViewController.swift in Sources */,
 				F1B39569252FC17B0022FBB3 /* LoginViewController.swift in Sources */,
+				F1CAD305254759AF000C599B /* ClearAddNewVC.swift in Sources */,
 				F1B39566252FC1670022FBB3 /* SignUpViewController.swift in Sources */,
 				F1F37E512512AE05004ED047 /* ViewController.swift in Sources */,
 				F18F0959252FEE6300CE70F9 /* SettingsViewController.swift in Sources */,

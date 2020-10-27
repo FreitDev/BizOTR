@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseFirestore
 import Firebase
+import ProgressHUD
 
 class AddNewViewController: UIViewController {
 
@@ -108,7 +109,7 @@ class AddNewViewController: UIViewController {
                 if date != nil {
                     
                     stringDate = formatter.string(from: date!)
-                    print("name: \(name ?? ""), amount: \(amount), date: \(stringDate)", "category: \(category ?? "")")
+                    print("name: \(name ?? ""), amount: \(amount), date: \(stringDate)", "category: \(category)")
                     
                     //expense = Expense(vendorName: name, expenseDate: stringDate, category: category, expenseAmount: amount)
                     
@@ -120,6 +121,8 @@ class AddNewViewController: UIViewController {
                         "uid" : uid as String
                         ] as [String : Any]
                     
+                    // Show progress indicator.
+                    ProgressHUD.show("Loading", icon: AnimatedIcon.added, interaction: false)
                     saveData(expense: expenseDict)
                     
                     // Run the save data function
@@ -138,6 +141,8 @@ class AddNewViewController: UIViewController {
                    print("Error adding document: \(err)")
                } else {
                    print("Document added with ID: \(ref!.documentID)")
+                // Proggress Indicator
+                ProgressHUD.showSucceed()
                }
         }
     }
@@ -145,6 +150,7 @@ class AddNewViewController: UIViewController {
     @objc func addTapped() {
         print("Add button tapped!")
         collectDataFromForm()
+        resetTextFields()
     }
     
     func updateTextField() -> String? {

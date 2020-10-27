@@ -39,6 +39,7 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        totalExpenses = 0
         expenses = [Expense]()
         getDataFromFirestore()
     }
@@ -70,7 +71,7 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
                 
                 // Trying to sort the expenses.
                 self.expenses = self.expenses.sorted(by: {
-                    $0.expenseDate.compare($1.expenseDate) == .orderedAscending
+                    $0.expenseDate.compare($1.expenseDate) == .orderedDescending
                 })
                 
                 
@@ -124,6 +125,13 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
             let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ExpenseTableViewCell
             cell.vendorNameLbl.text! = expenses[indexPath.row].vendorName
             cell.dateLbl.text! = expenses[indexPath.row].expenseDate
+            if expenses[indexPath.row].category == "Supplies" {
+                cell.categoryLbl.textColor = UIColor(hexString: "#FD9A28")
+            } else if expenses[indexPath.row].category == "Food" {
+                cell.categoryLbl.textColor = UIColor(hexString: "#26A7FF")
+            } else if  expenses[indexPath.row].category == "Gas" {
+                cell.categoryLbl.textColor = UIColor(hexString: "#FF5126")
+            }
             cell.categoryLbl.text! = expenses[indexPath.row].category
             cell.expenseAmountLbl.text! = getValue(amount: expenses[indexPath.row].expenseAmount)
             

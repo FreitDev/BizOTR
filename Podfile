@@ -11,6 +11,7 @@ target 'BizOTR' do
   pod 'Firebase/Analytics'
   pod 'Firebase/Storage'
   pod 'Firebase/Core'
-  pod 'Firebase/
+  pod 'Firebase'
+  pod 'ProgressHUD'
 
 end
