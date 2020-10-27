@@ -98,16 +98,30 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
     
     @IBAction func categoryControlChanged(_ sender: Any) {
         
+        var updatedTotal = 0
+        
         switch categoreySegmentControl.selectedSegmentIndex
             {
             case 1:
                 tableView.reloadData()
+                for supply in suppliesExpenses {
+                    updatedTotal += supply.expenseAmount
+                }
+                ExpenseTotalLbl.text! = getValue(amount: updatedTotal)
                 break
             case 2:
                 tableView.reloadData()
+                for food in foodExpenses {
+                    updatedTotal += food.expenseAmount
+                }
+                ExpenseTotalLbl.text! = getValue(amount: updatedTotal)
                 break
             case 3:
                 tableView.reloadData()
+                for gas in gasExpenses {
+                    updatedTotal += gas.expenseAmount
+                }
+                ExpenseTotalLbl.text! = getValue(amount: updatedTotal)
                 break
             default:
                 tableView.reloadData()
