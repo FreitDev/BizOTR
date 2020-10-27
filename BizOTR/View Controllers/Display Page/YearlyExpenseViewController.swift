@@ -14,8 +14,12 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
     @IBOutlet weak var ExpenseTotalLbl: UILabel!
     @IBOutlet weak var ExpenseSheetYearNavLbl: UINavigationItem!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var categoreySegmentControl: UISegmentedControl!
     
     var expenses = [Expense]()
+    var suppliesExpenses = [Expense]()
+    var foodExpenses = [Expense]()
+    var gasExpenses = [Expense]()
     var uid = String()
     var totalExpenses = 0
     
@@ -74,6 +78,7 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
                     $0.expenseDate.compare($1.expenseDate) == .orderedDescending
                 })
                 
+                self.queryExpenses(expenses: self.expenses)
                 
                 DispatchQueue.main.async {
                     // We have to reload the tableview when we gather the expense data.
@@ -90,6 +95,39 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
             uid = userId
         }
     }
+    
+    @IBAction func categoryControlChanged(_ sender: Any) {
+        
+        switch categoreySegmentControl.selectedSegmentIndex
+            {
+            case 1:
+                tableView.reloadData()
+                break
+            case 2:
+                tableView.reloadData()
+                break
+            case 3:
+                tableView.reloadData()
+                break
+            default:
+                tableView.reloadData()
+                break
+            }
+    }
+    
+    func queryExpenses(expenses: [Expense]) {
+        
+        for expense in expenses {
+            if expense.category == "Supplies" {
+                suppliesExpenses.append(expense)
+            } else if expense.category == "Food" {
+                foodExpenses.append(expense)
+            } else if expense.category == "Gas" {
+                gasExpenses.append(expense)
+            }
+        }
+    }
+    
     
 //    func fetchData() {
 //      db.collection("books").addSnapshotListener { (querySnapshot, error) in
@@ -117,24 +155,88 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
 
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             // #warning Incomplete implementation, return the number of rows
-            return expenses.count
+            
+            var count = 0
+            
+            switch categoreySegmentControl.selectedSegmentIndex
+                {
+                case 1:
+                    count = suppliesExpenses.count
+                    break
+                case 2:
+                    count = foodExpenses.count
+                    break
+                case 3:
+                    count = gasExpenses.count
+                    break
+                default:
+                    count = expenses.count
+                    break
+                }
+            return count
+            
+            
         }
 
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ExpenseTableViewCell
-            cell.vendorNameLbl.text! = expenses[indexPath.row].vendorName
-            cell.dateLbl.text! = expenses[indexPath.row].expenseDate
-            if expenses[indexPath.row].category == "Supplies" {
-                cell.categoryLbl.textColor = UIColor(hexString: "#FD9A28")
-            } else if expenses[indexPath.row].category == "Food" {
-                cell.categoryLbl.textColor = UIColor(hexString: "#26A7FF")
-            } else if  expenses[indexPath.row].category == "Gas" {
-                cell.categoryLbl.textColor = UIColor(hexString: "#FF5126")
-            }
-            cell.categoryLbl.text! = expenses[indexPath.row].category
-            cell.expenseAmountLbl.text! = getValue(amount: expenses[indexPath.row].expenseAmount)
             
+            switch categoreySegmentControl.selectedSegmentIndex
+                {
+                case 1:
+                    cell.vendorNameLbl.text! = suppliesExpenses[indexPath.row].vendorName
+                    cell.dateLbl.text! = suppliesExpenses[indexPath.row].expenseDate
+                    if suppliesExpenses[indexPath.row].category == "Supplies" {
+                        cell.categoryLbl.textColor = UIColor(hexString: "#FD9A28")
+                    } else if suppliesExpenses[indexPath.row].category == "Food" {
+                        cell.categoryLbl.textColor = UIColor(hexString: "#26A7FF")
+                    } else if  suppliesExpenses[indexPath.row].category == "Gas" {
+                        cell.categoryLbl.textColor = UIColor(hexString: "#FF5126")
+                    }
+                    cell.categoryLbl.text! = suppliesExpenses[indexPath.row].category
+                    cell.expenseAmountLbl.text! = getValue(amount: suppliesExpenses[indexPath.row].expenseAmount)
+                    break
+                case 2:
+                    cell.vendorNameLbl.text! = foodExpenses[indexPath.row].vendorName
+                    cell.dateLbl.text! = foodExpenses[indexPath.row].expenseDate
+                    if foodExpenses[indexPath.row].category == "Supplies" {
+                        cell.categoryLbl.textColor = UIColor(hexString: "#FD9A28")
+                    } else if foodExpenses[indexPath.row].category == "Food" {
+                        cell.categoryLbl.textColor = UIColor(hexString: "#26A7FF")
+                    } else if  foodExpenses[indexPath.row].category == "Gas" {
+                        cell.categoryLbl.textColor = UIColor(hexString: "#FF5126")
+                    }
+                    cell.categoryLbl.text! = foodExpenses[indexPath.row].category
+                    cell.expenseAmountLbl.text! = getValue(amount: foodExpenses[indexPath.row].expenseAmount)
+                   break
+                case 3:
+                    cell.vendorNameLbl.text! = gasExpenses[indexPath.row].vendorName
+                    cell.dateLbl.text! = gasExpenses[indexPath.row].expenseDate
+                    if gasExpenses[indexPath.row].category == "Supplies" {
+                        cell.categoryLbl.textColor = UIColor(hexString: "#FD9A28")
+                    } else if gasExpenses[indexPath.row].category == "Food" {
+                        cell.categoryLbl.textColor = UIColor(hexString: "#26A7FF")
+                    } else if  gasExpenses[indexPath.row].category == "Gas" {
+                        cell.categoryLbl.textColor = UIColor(hexString: "#FF5126")
+                    }
+                    cell.categoryLbl.text! = gasExpenses[indexPath.row].category
+                    cell.expenseAmountLbl.text! = getValue(amount: gasExpenses[indexPath.row].expenseAmount)
+                    break
+                default:
+                    cell.vendorNameLbl.text! = expenses[indexPath.row].vendorName
+                    cell.dateLbl.text! = expenses[indexPath.row].expenseDate
+                    if expenses[indexPath.row].category == "Supplies" {
+                        cell.categoryLbl.textColor = UIColor(hexString: "#FD9A28")
+                    } else if expenses[indexPath.row].category == "Food" {
+                        cell.categoryLbl.textColor = UIColor(hexString: "#26A7FF")
+                    } else if  expenses[indexPath.row].category == "Gas" {
+                        cell.categoryLbl.textColor = UIColor(hexString: "#FF5126")
+                    }
+                    cell.categoryLbl.text! = expenses[indexPath.row].category
+                    cell.expenseAmountLbl.text! = getValue(amount: expenses[indexPath.row].expenseAmount)
+                   break
+                }
             return cell
         }
     

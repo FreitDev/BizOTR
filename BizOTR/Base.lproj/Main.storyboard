@@ -54,14 +54,25 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$0.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xzB-GP-gS4">
-                                <rect key="frame" x="20" y="141.5" width="374" height="60"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="50"/>
+                                <rect key="frame" x="20" y="118.5" width="374" height="62.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="52"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gyy-N2-M4u">
-                                <rect key="frame" x="0.0" y="250" width="414" height="563"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="iPR-1a-L73">
+                                <rect key="frame" x="41.5" y="236.5" width="331" height="32"/>
+                                <segments>
+                                    <segment title="All"/>
+                                    <segment title="Supplies"/>
+                                    <segment title="Food"/>
+                                    <segment title="Gas"/>
+                                </segments>
+                                <connections>
+                                    <action selector="categoryControlChanged:" destination="f3e-Fn-oGq" eventType="valueChanged" id="aEU-CG-wUM"/>
+                                </connections>
+                            </segmentedControl>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gyy-N2-M4u">
+                                <rect key="frame" x="0.0" y="275.5" width="414" height="537.5"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="91" id="81u-xP-D0U" customClass="ExpenseTableViewCell" customModule="BizOTR" customModuleProvider="target">
@@ -138,8 +149,15 @@
                         <color key="backgroundColor" red="0.54117647058823526" green="0.72941176470588232" blue="0.68235294117647061" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="JPM-KK-RGH" firstAttribute="trailing" secondItem="xzB-GP-gS4" secondAttribute="trailing" constant="20" id="1Sl-qT-tMF"/>
-                            <constraint firstItem="xzB-GP-gS4" firstAttribute="centerY" secondItem="JPM-KK-RGH" secondAttribute="centerY" multiplier="0.4" id="fql-9J-Xhp"/>
+                            <constraint firstItem="iPR-1a-L73" firstAttribute="centerX" secondItem="JPM-KK-RGH" secondAttribute="centerX" id="88s-Y6-BuW"/>
+                            <constraint firstItem="gyy-N2-M4u" firstAttribute="bottom" secondItem="JPM-KK-RGH" secondAttribute="bottom" id="J8v-Ng-ert"/>
+                            <constraint firstItem="gyy-N2-M4u" firstAttribute="height" secondItem="lw0-ej-kWa" secondAttribute="height" multiplier="0.6" id="Ngf-zh-gda"/>
+                            <constraint firstItem="iPR-1a-L73" firstAttribute="width" secondItem="lw0-ej-kWa" secondAttribute="width" multiplier="0.8" id="Q3b-my-2ko"/>
+                            <constraint firstItem="gyy-N2-M4u" firstAttribute="top" secondItem="iPR-1a-L73" secondAttribute="bottom" constant="8" id="Xa6-dP-nCF"/>
+                            <constraint firstItem="xzB-GP-gS4" firstAttribute="centerY" secondItem="JPM-KK-RGH" secondAttribute="centerY" multiplier="0.35" id="fql-9J-Xhp"/>
                             <constraint firstItem="xzB-GP-gS4" firstAttribute="leading" secondItem="JPM-KK-RGH" secondAttribute="leading" constant="20" id="g6U-ZU-8cV"/>
+                            <constraint firstItem="gyy-N2-M4u" firstAttribute="width" secondItem="lw0-ej-kWa" secondAttribute="width" id="gEv-au-LS5"/>
+                            <constraint firstItem="gyy-N2-M4u" firstAttribute="centerX" secondItem="JPM-KK-RGH" secondAttribute="centerX" id="wfQ-0a-wev"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Home" id="Atq-Ss-Ilt"/>
@@ -147,6 +165,7 @@
                     <connections>
                         <outlet property="ExpenseSheetYearNavLbl" destination="68T-tl-5ml" id="0nk-DJ-p8N"/>
                         <outlet property="ExpenseTotalLbl" destination="xzB-GP-gS4" id="SaJ-3o-046"/>
+                        <outlet property="categoreySegmentControl" destination="iPR-1a-L73" id="I15-KB-W4G"/>
                         <outlet property="tableView" destination="gyy-N2-M4u" id="LAz-HG-uTS"/>
                     </connections>
                 </viewController>
