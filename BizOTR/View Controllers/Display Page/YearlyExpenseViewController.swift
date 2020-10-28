@@ -24,6 +24,7 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
     var totalExpenses = 0
     var updatedTotal = 0
     var rowCount = 0
+    var index = 0
     
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
@@ -111,15 +112,19 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
         switch categoreySegmentControl.selectedSegmentIndex
         {
         case 1:
+            tableView.reloadData()
             runTotals(category: Constants.Category.supplies)
             break
         case 2:
+            tableView.reloadData()
             runTotals(category: Constants.Category.food)
             break
         case 3:
+            tableView.reloadData()
             runTotals(category: Constants.Category.gas)
             break
         default:
+            tableView.reloadData()
             runTotals(category: "default")
             break
         }
@@ -141,30 +146,33 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
     func runTotals(category: String) {
         
         if category == Constants.Category.supplies {
-            tableView.reloadData()
+            //tableView.reloadData()
             updatedTotal = 0
             for supply in suppliesExpenses {
                 updatedTotal += supply.expenseAmount
             }
             ExpenseTotalLbl.text! = getValue(amount: updatedTotal)
         } else if category == Constants.Category.food {
-            tableView.reloadData()
+            //tableView.reloadData()
             updatedTotal = 0
             for food in foodExpenses {
                 updatedTotal += food.expenseAmount
             }
             ExpenseTotalLbl.text! = getValue(amount: updatedTotal)
         } else if category == Constants.Category.gas {
-            tableView.reloadData()
+            //tableView.reloadData()
             updatedTotal = 0
             for gas in gasExpenses {
                 updatedTotal += gas.expenseAmount
             }
             ExpenseTotalLbl.text! = getValue(amount: updatedTotal)
         } else {
-            tableView.reloadData()
+            //tableView.reloadData()
             updatedTotal = 0
-            ExpenseTotalLbl.text! = getValue(amount: totalExpenses)
+            for expense in expenses {
+                updatedTotal += expense.expenseAmount
+            }
+            ExpenseTotalLbl.text! = getValue(amount: updatedTotal)
         }
     }
     
@@ -180,15 +188,19 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
         
         switch categoreySegmentControl.selectedSegmentIndex {
         case 1:
+            //rowCount = 0
             rowCount = suppliesExpenses.count
             break
         case 2:
+            //rowCount = 0
             rowCount = foodExpenses.count
             break
         case 3:
+            //rowCount = 0
             rowCount = gasExpenses.count
             break
         default:
+            //rowCount = 0
             rowCount = expenses.count
             break
         }
@@ -208,57 +220,47 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
         case 1:
             cell.vendorNameLbl.text! = suppliesExpenses[indexPath.row].vendorName
             cell.dateLbl.text! = suppliesExpenses[indexPath.row].expenseDate
-            if suppliesExpenses[indexPath.row].category == "Supplies" {
-                cell.categoryLbl.textColor = UIColor(hexString: "#FD9A28")
-            } else if suppliesExpenses[indexPath.row].category == "Food" {
-                cell.categoryLbl.textColor = UIColor(hexString: "#26A7FF")
-            } else if  suppliesExpenses[indexPath.row].category == "Gas" {
-                cell.categoryLbl.textColor = UIColor(hexString: "#FF5126")
-            }
+            cell.categoryLbl.textColor = findCategoryColor(passedCategory: suppliesExpenses[indexPath.row].category)
             cell.categoryLbl.text! = suppliesExpenses[indexPath.row].category
             cell.expenseAmountLbl.text! = getValue(amount: suppliesExpenses[indexPath.row].expenseAmount)
             break
         case 2:
             cell.vendorNameLbl.text! = foodExpenses[indexPath.row].vendorName
             cell.dateLbl.text! = foodExpenses[indexPath.row].expenseDate
-            if foodExpenses[indexPath.row].category == "Supplies" {
-                cell.categoryLbl.textColor = UIColor(hexString: "#FD9A28")
-            } else if foodExpenses[indexPath.row].category == "Food" {
-                cell.categoryLbl.textColor = UIColor(hexString: "#26A7FF")
-            } else if  foodExpenses[indexPath.row].category == "Gas" {
-                cell.categoryLbl.textColor = UIColor(hexString: "#FF5126")
-            }
+            cell.categoryLbl.textColor = findCategoryColor(passedCategory: foodExpenses[indexPath.row].category)
             cell.categoryLbl.text! = foodExpenses[indexPath.row].category
             cell.expenseAmountLbl.text! = getValue(amount: foodExpenses[indexPath.row].expenseAmount)
             break
         case 3:
             cell.vendorNameLbl.text! = gasExpenses[indexPath.row].vendorName
             cell.dateLbl.text! = gasExpenses[indexPath.row].expenseDate
-            if gasExpenses[indexPath.row].category == "Supplies" {
-                cell.categoryLbl.textColor = UIColor(hexString: "#FD9A28")
-            } else if gasExpenses[indexPath.row].category == "Food" {
-                cell.categoryLbl.textColor = UIColor(hexString: "#26A7FF")
-            } else if  gasExpenses[indexPath.row].category == "Gas" {
-                cell.categoryLbl.textColor = UIColor(hexString: "#FF5126")
-            }
+            cell.categoryLbl.textColor = findCategoryColor(passedCategory: gasExpenses[indexPath.row].category)
             cell.categoryLbl.text! = gasExpenses[indexPath.row].category
             cell.expenseAmountLbl.text! = getValue(amount: gasExpenses[indexPath.row].expenseAmount)
             break
         default:
             cell.vendorNameLbl.text! = expenses[indexPath.row].vendorName
             cell.dateLbl.text! = expenses[indexPath.row].expenseDate
-            if expenses[indexPath.row].category == "Supplies" {
-                cell.categoryLbl.textColor = UIColor(hexString: "#FD9A28")
-            } else if expenses[indexPath.row].category == "Food" {
-                cell.categoryLbl.textColor = UIColor(hexString: "#26A7FF")
-            } else if  expenses[indexPath.row].category == "Gas" {
-                cell.categoryLbl.textColor = UIColor(hexString: "#FF5126")
-            }
+            cell.categoryLbl.textColor = findCategoryColor(passedCategory: expenses[indexPath.row].category)
             cell.categoryLbl.text! = expenses[indexPath.row].category
             cell.expenseAmountLbl.text! = getValue(amount: expenses[indexPath.row].expenseAmount)
             break
         }
         return cell
+    }
+    
+    func findCategoryColor(passedCategory: String) -> UIColor {
+        
+        var catColor: UIColor!
+        
+        if passedCategory == Constants.Category.supplies {
+            catColor = UIColor(hexString: "#FD9A28")
+        } else if passedCategory == Constants.Category.food {
+            catColor = UIColor(hexString: "#26A7FF")
+        } else if  passedCategory == Constants.Category.gas {
+            catColor = UIColor(hexString: "#FF5126")
+        }
+        return catColor
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -277,6 +279,8 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
                 alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
                     self.deleteFromFirestore(uid: self.suppliesExpenses[indexPath.row].docId, indexpath: indexPath)
                     self.suppliesExpenses.remove(at: indexPath.row)
+                    self.index = self.find(value: self.suppliesExpenses[indexPath.row].docId, in: self.expenses)!
+                    self.expenses.remove(at: self.index)
                     self.tableView.deleteRows(at: [indexPath], with: .fade)
                     self.runTotals(category: Constants.Category.supplies)
                 }))
@@ -293,6 +297,8 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
                     
                     self.deleteFromFirestore(uid: self.foodExpenses[indexPath.row].docId, indexpath: indexPath)
                     self.foodExpenses.remove(at: indexPath.row)
+                    self.index = self.find(value: self.foodExpenses[indexPath.row].docId, in: self.expenses)!
+                    self.expenses.remove(at: self.index)
                     self.tableView.deleteRows(at: [indexPath], with: .fade)
                     self.runTotals(category: Constants.Category.food)
                 }))
@@ -309,6 +315,8 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
                     
                     self.deleteFromFirestore(uid: self.gasExpenses[indexPath.row].docId, indexpath: indexPath)
                     self.gasExpenses.remove(at: indexPath.row)
+                    self.index = self.find(value: self.gasExpenses[indexPath.row].docId, in: self.expenses)!
+                    self.expenses.remove(at: self.index)
                     self.tableView.deleteRows(at: [indexPath], with: .fade)
                     self.runTotals(category: Constants.Category.gas)
                 }))
@@ -324,8 +332,23 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
                 alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
                     
                     self.deleteFromFirestore(uid: self.expenses[indexPath.row].docId, indexpath: indexPath)
-                    self.expenses.remove(at: indexPath.row)
-                    self.tableView.deleteRows(at: [indexPath], with: .fade)
+                    
+                    if self.expenses[indexPath.row].category == Constants.Category.supplies {
+                        self.index = self.find(value: self.expenses[indexPath.row].docId, in: self.suppliesExpenses)!
+                        self.suppliesExpenses.remove(at: self.index)
+                        self.expenses.remove(at: indexPath.row)
+                        self.tableView.deleteRows(at: [indexPath], with: .fade)
+                    } else if self.expenses[indexPath.row].category == Constants.Category.food {
+                        self.index = self.find(value: self.expenses[indexPath.row].docId, in: self.foodExpenses)!
+                        self.foodExpenses.remove(at: self.index)
+                        self.expenses.remove(at: indexPath.row)
+                        self.tableView.deleteRows(at: [indexPath], with: .fade)
+                    } else if self.expenses[indexPath.row].category == Constants.Category.gas {
+                        self.index = self.find(value: self.expenses[indexPath.row].docId, in: self.gasExpenses)!
+                        self.gasExpenses.remove(at: self.index)
+                        self.expenses.remove(at: indexPath.row)
+                        self.tableView.deleteRows(at: [indexPath], with: .fade)
+                    }
                     self.runTotals(category: "default")
                 }))
                 alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
@@ -333,6 +356,15 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
             }
             break
         }
+    }
+    
+    func find(value searchValue: String, in array: [Expense]) -> Int? {
+        for (index, value) in array.enumerated() {
+            if value.docId == searchValue {
+                return index
+            }
+        }
+        return nil
     }
     
     func deleteFromFirestore(uid: String, indexpath: IndexPath) {
@@ -411,4 +443,10 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
      }
      */
     
+}
+
+extension Array where Element: Equatable {
+    func removing(_ obj: Element) -> [Element] {
+        return filter { $0 != obj }
+    }
 }
