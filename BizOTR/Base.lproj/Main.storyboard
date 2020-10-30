@@ -524,9 +524,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gqj-6a-pIE">
-                                <rect key="frame" x="179" y="433" width="57" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Year to Display:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwO-NT-gsn">
+                                <rect key="frame" x="20" y="108" width="374" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FNj-xW-dvq">
+                                <rect key="frame" x="20" y="132" width="374" height="216"/>
+                            </pickerView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gqj-6a-pIE">
+                                <rect key="frame" x="170.5" y="356" width="73" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Sign out"/>
                                 <connections>
                                     <action selector="signoutBtnTapped:" destination="9ZM-WK-Ve7" eventType="touchUpInside" id="MGq-Kc-YTJ"/>
@@ -535,15 +544,39 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="sqn-k5-i51"/>
                         <color key="backgroundColor" red="0.72156862745098038" green="0.83529411764705885" blue="0.80392156862745101" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="Gqj-6a-pIE" firstAttribute="top" secondItem="FNj-xW-dvq" secondAttribute="bottom" constant="8" id="Cx3-Qf-QWu"/>
+                            <constraint firstItem="Gqj-6a-pIE" firstAttribute="centerX" secondItem="FNj-xW-dvq" secondAttribute="centerX" id="FTV-kH-SQd"/>
+                            <constraint firstItem="FNj-xW-dvq" firstAttribute="top" secondItem="bwO-NT-gsn" secondAttribute="bottom" id="Noa-Mt-YnB"/>
+                            <constraint firstItem="bwO-NT-gsn" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sqn-k5-i51" secondAttribute="leading" id="Ofq-ki-eoN"/>
+                            <constraint firstItem="FNj-xW-dvq" firstAttribute="centerX" secondItem="bwO-NT-gsn" secondAttribute="centerX" id="R3U-yV-02S"/>
+                            <constraint firstItem="sqn-k5-i51" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bwO-NT-gsn" secondAttribute="trailing" id="UCh-Tp-lqu"/>
+                            <constraint firstItem="bwO-NT-gsn" firstAttribute="top" secondItem="sqn-k5-i51" secondAttribute="top" constant="20" id="XeX-wB-gsJ"/>
+                            <constraint firstItem="Gqj-6a-pIE" firstAttribute="width" secondItem="FNj-xW-dvq" secondAttribute="width" multiplier="0.228125" constant="-12.318749999999994" id="YAy-wS-2jB"/>
+                            <constraint firstItem="bwO-NT-gsn" firstAttribute="centerX" secondItem="sqn-k5-i51" secondAttribute="centerX" id="lUl-pS-DVj"/>
+                            <constraint firstItem="FNj-xW-dvq" firstAttribute="width" secondItem="bwO-NT-gsn" secondAttribute="width" multiplier="0.855615" constant="54" id="pTR-0y-ReA"/>
+                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Settings" id="UJv-bP-fdV"/>
+                    <navigationItem key="navigationItem" title="Settings" id="UJv-bP-fdV">
+                        <barButtonItem key="rightBarButtonItem" title="Save" style="plain" id="Jgv-ez-vf6">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="7gY-69-Lgw">
+                                <rect key="frame" x="302" y="7" width="92" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Save"/>
+                                <connections>
+                                    <action selector="settingSaveBtnTapped:" destination="9ZM-WK-Ve7" eventType="touchUpInside" id="DYr-Cw-J2k"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="signoutBtn" destination="Gqj-6a-pIE" id="UiS-zL-bvL"/>
+                        <outlet property="yearPickerView" destination="FNj-xW-dvq" id="yGM-WU-HC8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5lm-Qa-yJl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="164" y="1381"/>
+            <point key="canvasLocation" x="163.768115942029" y="1380.8035714285713"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="oay-XR-lmu">

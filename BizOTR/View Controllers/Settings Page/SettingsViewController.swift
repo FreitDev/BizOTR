@@ -12,11 +12,18 @@ import FirebaseAuth
 class SettingsViewController: UIViewController {
     
     @IBOutlet weak var signoutBtn: UIButton!
-
+    @IBOutlet weak var yearPickerView: UIPickerView!
+    
+    var yearOptions: Array = ["2020", "2019", "2018"]
+    var year = String()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+        yearPickerView.dataSource = self
+        yearPickerView.delegate = self
     }
     
     @IBAction func signoutBtnTapped(_ sender: Any) {
@@ -40,7 +47,12 @@ class SettingsViewController: UIViewController {
 
         (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(loginNavController)
     }
-
+    
+    
+    @IBAction func settingSaveBtnTapped(_ sender: Any) {
+        print("Setting save button was tapped!")
+    }
+    
     /*
     // MARK: - Navigation
 
@@ -51,4 +63,29 @@ class SettingsViewController: UIViewController {
     }
     */
 
+}
+
+extension SettingsViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return yearOptions.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return yearOptions[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+//        if row == 0 {
+//            year = "2018"
+//        } else if row == 1 {
+//            year = "2019"
+//        } else if row == 2 {
+//            year = "2020"
+//        }
+    }
 }
