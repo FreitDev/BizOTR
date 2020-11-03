@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="JnY-qV-azL">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -19,9 +18,9 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="f3e-Fn-oGq" kind="relationship" relationship="viewControllers" id="J2s-Nw-ciY"/>
-                        <segue destination="Bos-ov-bQb" kind="relationship" relationship="viewControllers" id="hGh-H2-Pp6"/>
-                        <segue destination="Zcg-B3-s6Z" kind="relationship" relationship="viewControllers" id="gjH-hm-Xci"/>
+                        <segue destination="4hI-Ot-XMk" kind="relationship" relationship="viewControllers" id="hR3-RW-3Bs"/>
+                        <segue destination="Bos-ov-bQb" kind="relationship" relationship="viewControllers" id="bV3-3E-iMc"/>
+                        <segue destination="Zcg-B3-s6Z" kind="relationship" relationship="viewControllers" id="745-K3-kAa"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="soQ-MC-ZMn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -43,9 +42,9 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xvJ-8q-MoA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-510" y="706"/>
+            <point key="canvasLocation" x="400" y="706"/>
         </scene>
-        <!--Year-->
+        <!--Expenses-->
         <scene sceneID="bLj-ug-SId">
             <objects>
                 <viewController id="f3e-Fn-oGq" customClass="YearlyExpenseViewController" customModule="BizOTR" customModuleProvider="target" sceneMemberID="viewController">
@@ -54,7 +53,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$0.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xzB-GP-gS4">
-                                <rect key="frame" x="20" y="118.5" width="374" height="62.5"/>
+                                <rect key="frame" x="20" y="126.5" width="374" height="62.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="52"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -144,6 +143,10 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SGK-WL-KFo">
+                                <rect key="frame" x="0.0" y="29" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            </navigationBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="JPM-KK-RGH"/>
                         <color key="backgroundColor" red="0.54117647058823526" green="0.72941176470588232" blue="0.68235294117647061" alpha="1" colorSpace="calibratedRGB"/>
@@ -160,18 +163,57 @@
                             <constraint firstItem="gyy-N2-M4u" firstAttribute="centerX" secondItem="JPM-KK-RGH" secondAttribute="centerX" id="wfQ-0a-wev"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Home" id="Atq-Ss-Ilt"/>
-                    <navigationItem key="navigationItem" title="Year" id="68T-tl-5ml"/>
+                    <navigationItem key="navigationItem" title="Expenses" id="68T-tl-5ml">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="OdF-5u-Jk0">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="VhO-2S-DB8">
+                                <rect key="frame" x="302" y="7" width="92" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Print Preview"/>
+                                <connections>
+                                    <action selector="printBtnTapped:" destination="f3e-Fn-oGq" eventType="touchUpInside" id="kN5-fG-CWo"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="ExpenseSheetYearNavLbl" destination="68T-tl-5ml" id="0nk-DJ-p8N"/>
                         <outlet property="ExpenseTotalLbl" destination="xzB-GP-gS4" id="SaJ-3o-046"/>
                         <outlet property="categoreySegmentControl" destination="iPR-1a-L73" id="I15-KB-W4G"/>
+                        <outlet property="navBar" destination="SGK-WL-KFo" id="5pw-lY-TF9"/>
                         <outlet property="tableView" destination="gyy-N2-M4u" id="LAz-HG-uTS"/>
+                        <segue destination="wTr-0a-MSo" kind="show" identifier="ToPrintPreviewVC" id="VE5-I0-Q7R"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H9q-bp-VpU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1168.1159420289855" y="705.80357142857144"/>
+            <point key="canvasLocation" x="-294" y="1385"/>
+        </scene>
+        <!--Print Preview View Controller-->
+        <scene sceneID="iyi-WV-12G">
+            <objects>
+                <viewController id="wTr-0a-MSo" customClass="PrintPreviewViewController" customModule="BizOTR" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Mvk-hT-TVL">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="ua8-MW-9fI"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="woi-Iw-JTU">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="USk-Yt-Zlj">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="bia-st-g8g">
+                                <rect key="frame" x="302" y="7" width="92" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Print"/>
+                                <connections>
+                                    <action selector="printBtnTapped:" destination="wTr-0a-MSo" eventType="touchUpInside" id="rNM-CT-CKG"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7Th-Qh-xFp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-294" y="2098"/>
         </scene>
         <!--Settings-->
         <scene sceneID="bvC-g9-03B">
@@ -188,7 +230,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="76v-TM-9HV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="165" y="706"/>
+            <point key="canvasLocation" x="1074" y="706"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="u0K-eH-hiR">
@@ -514,7 +556,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nOt-27-tU9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-510.14492753623193" y="1380.8035714285713"/>
+            <point key="canvasLocation" x="400" y="1385"/>
         </scene>
         <!--Settings-->
         <scene sceneID="7wj-vP-OCl">
@@ -576,7 +618,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5lm-Qa-yJl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="163.768115942029" y="1380.8035714285713"/>
+            <point key="canvasLocation" x="1074" y="1385"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="oay-XR-lmu">
@@ -594,6 +636,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RSk-RV-qUZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2832" y="-275"/>
+        </scene>
+        <!--Home-->
+        <scene sceneID="QcJ-l9-MEI">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="4hI-Ot-XMk" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Home" id="cTK-VL-F7K"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="5tA-WG-Les">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="f3e-Fn-oGq" kind="relationship" relationship="rootViewController" id="GnO-sK-Tn3"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="h4D-65-bhq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-294.20289855072468" y="705.80357142857144"/>
         </scene>
     </scenes>
     <resources>

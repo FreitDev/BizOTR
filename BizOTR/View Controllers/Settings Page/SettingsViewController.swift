@@ -8,26 +8,49 @@
 
 import UIKit
 import FirebaseAuth
+import Firebase
+import FirebaseFirestore
 
 class SettingsViewController: UIViewController {
     
     @IBOutlet weak var signoutBtn: UIButton!
     @IBOutlet weak var yearPickerView: UIPickerView!
     
-    var yearOptions: Array = ["2020", "2019", "2018"]
-    var year = String()
+    var yearOptions = [String]()
+    var year = ""
+    let db = Firestore.firestore()
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        
         yearPickerView.dataSource = self
         yearPickerView.delegate = self
+        getDataFromFirestore()
     }
     
     @IBAction func signoutBtnTapped(_ sender: Any) {
         self.logoutUser()
+    }
+    
+    func getDataFromFirestore() {
+        // Fetch the expenses for this user....
+        var tempOptions = [String]()
+        let ref = db.collection("years")
+        ref.getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    tempOptions.append(contentsOf: document.get("year") as! [String])
+                    DispatchQueue.main.async {
+                        self.yearOptions = tempOptions.reversed()
+                        self.yearPickerView.reloadAllComponents()
+                    }
+                }
+            }
+        }
     }
     
     // log out
@@ -51,6 +74,7 @@ class SettingsViewController: UIViewController {
     
     @IBAction func settingSaveBtnTapped(_ sender: Any) {
         print("Setting save button was tapped!")
+        defaults.set(year, forKey: "systemYear")
     }
     
     /*
@@ -80,6 +104,10 @@ extension SettingsViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        
+        year = yearOptions[row]
+        defaults.set(year, forKey: "systemYear")
+        
 //        if row == 0 {
 //            year = "2018"
 //        } else if row == 1 {

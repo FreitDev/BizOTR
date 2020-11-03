@@ -15,6 +15,7 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
     @IBOutlet weak var ExpenseSheetYearNavLbl: UINavigationItem!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var categoreySegmentControl: UISegmentedControl!
+    @IBOutlet weak var navBar: UINavigationBar!
     
     var expenses = [Expense]()
     var suppliesExpenses = [Expense]()
@@ -46,6 +47,7 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        self.tabBarController?.tabBar.isHidden = false
         resetEverything()
         getDataFromFirestore()
     }
@@ -174,6 +176,11 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
             }
             ExpenseTotalLbl.text! = getValue(amount: updatedTotal)
         }
+    }
+    
+    @IBAction func printBtnTapped(_ sender: Any) {
+        
+        performSegue(withIdentifier: "ToPrintPreviewVC", sender: YearlyExpenseViewController.self)
     }
     
     // MARK: - Table view data source
@@ -423,15 +430,18 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
      }
      */
     
-    /*
+
      // MARK: - Navigation
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
      // Get the new view controller using segue.destination.
+        
      // Pass the selected object to the new view controller.
+        guard let printPreviewVC = segue.destination as? PrintPreviewViewController else { return }
+        printPreviewVC.passedExpenses = expenses
      }
-     */
+     
     
     /*
      // MARK: - Navigation
@@ -450,3 +460,4 @@ extension Array where Element: Equatable {
         return filter { $0 != obj }
     }
 }
+
