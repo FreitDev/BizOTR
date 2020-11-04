@@ -13,15 +13,33 @@ import Firebase
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+    var year: String!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         // Configuring Firebase
         FirebaseApp.configure()
+        setDefaults()
         
         return true
+    }
+    
+    func setDefaults() {
+        
+        let defaults = UserDefaults.standard
+        let db = Firestore.firestore()
+        let ref = db.collection("defaultSettings")
+        ref.getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    self.year = document.get("defaultYear") as? String
+                    defaults.set(self.year, forKey: "systemYear")
+                }
+            }
+        }
     }
 
     // MARK: UISceneSession Lifecycle

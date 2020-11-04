@@ -26,6 +26,7 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
     var updatedTotal = 0
     var rowCount = 0
     var index = 0
+    var expenseYear: String!
     
     let db = Firestore.firestore()
     let defaults = UserDefaults.standard
@@ -40,7 +41,7 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        setupElements()
+        
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -49,6 +50,7 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = false
         resetEverything()
+        setupElements()
         getDataFromFirestore()
     }
     
@@ -75,7 +77,10 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
             } else {
                 for document in querySnapshot!.documents {
                     //print("\(document.documentID) => \(document.data())")
-                    self.expenses.append(Expense(vendorName: document.get("name") as! String, expenseDate: document.get("date") as! String, category: document.get("category") as! String, expenseAmount: document.get("amount") as! Int, uid: document.get("uid") as! String, docId: document.documentID))
+                    // ----------------------------------------------------------------
+                    if (document.get("date") as! String).contains(self.expenseYear) {
+                        self.expenses.append(Expense(vendorName: document.get("name") as! String, expenseDate: document.get("date") as! String, category: document.get("category") as! String, expenseAmount: document.get("amount") as! Int, uid: document.get("uid") as! String, docId: document.documentID))
+                    }
                     
                     // Setting the total expenses
                     self.totalExpenses += (document.get("amount") as! Int)
@@ -90,6 +95,7 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
                 self.expenses = self.expenses.sorted(by: {
                     $0.expenseDate.compare($1.expenseDate) == .orderedDescending
                 })
+                
                 
                 self.queryExpenses(expenses: self.expenses)
                 
@@ -106,6 +112,10 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
         // Set the uid as long as it is passed from login or sign in
         if let userId = defaults.string(forKey: "uid") {
             uid = userId
+        }
+        
+        if let defaultYear = defaults.string(forKey: "systemYear") {
+            expenseYear = defaultYear
         }
     }
     
@@ -136,11 +146,18 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
         
         for expense in expenses {
             if expense.category == Constants.Category.supplies {
-                suppliesExpenses.append(expense)
+                print(expense.expenseDate)
+                if expense.expenseDate.contains(expenseYear) {
+                    suppliesExpenses.append(expense)
+                }
             } else if expense.category == Constants.Category.food {
-                foodExpenses.append(expense)
+                if expense.expenseDate.contains(expenseYear) {
+                    foodExpenses.append(expense)
+                }
             } else if expense.category == Constants.Category.gas {
-                gasExpenses.append(expense)
+                if expense.expenseDate.contains(expenseYear) {
+                    gasExpenses.append(expense)
+                }
             }
         }
     }

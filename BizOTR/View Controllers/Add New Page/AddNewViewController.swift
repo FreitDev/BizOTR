@@ -100,7 +100,7 @@ class AddNewViewController: UIViewController {
                 expenseErrorLabl.alpha = 0
                 
                 let formatter = DateFormatter()
-                formatter.dateStyle = .short
+                formatter.dateStyle = .medium
                 formatter.timeStyle = .short
                 
                 name = vendorNameTextField.text
