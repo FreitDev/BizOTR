@@ -147,19 +147,37 @@
                                 <rect key="frame" x="0.0" y="29" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             </navigationBar>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E3v-Qa-yRd">
+                                <rect key="frame" x="41.5" y="451" width="331" height="179"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 Expenses in " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uiU-L0-xKs">
+                                <rect key="frame" x="58" y="460" width="298" height="161"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="JPM-KK-RGH"/>
                         <color key="backgroundColor" red="0.54117647058823526" green="0.72941176470588232" blue="0.68235294117647061" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="JPM-KK-RGH" firstAttribute="trailing" secondItem="xzB-GP-gS4" secondAttribute="trailing" constant="20" id="1Sl-qT-tMF"/>
+                            <constraint firstItem="uiU-L0-xKs" firstAttribute="centerX" secondItem="E3v-Qa-yRd" secondAttribute="centerX" id="87l-7N-rxt"/>
                             <constraint firstItem="iPR-1a-L73" firstAttribute="centerX" secondItem="JPM-KK-RGH" secondAttribute="centerX" id="88s-Y6-BuW"/>
+                            <constraint firstItem="uiU-L0-xKs" firstAttribute="centerY" secondItem="E3v-Qa-yRd" secondAttribute="centerY" id="C26-92-1Vc"/>
+                            <constraint firstItem="E3v-Qa-yRd" firstAttribute="centerY" secondItem="JPM-KK-RGH" secondAttribute="centerY" multiplier="1.2" id="CWm-A3-1K7"/>
                             <constraint firstItem="gyy-N2-M4u" firstAttribute="bottom" secondItem="JPM-KK-RGH" secondAttribute="bottom" id="J8v-Ng-ert"/>
+                            <constraint firstItem="E3v-Qa-yRd" firstAttribute="width" secondItem="lw0-ej-kWa" secondAttribute="width" multiplier="0.8" id="LF0-OR-rDz"/>
+                            <constraint firstItem="E3v-Qa-yRd" firstAttribute="height" secondItem="lw0-ej-kWa" secondAttribute="height" multiplier="0.2" id="M1d-CD-bWd"/>
                             <constraint firstItem="gyy-N2-M4u" firstAttribute="height" secondItem="lw0-ej-kWa" secondAttribute="height" multiplier="0.6" id="Ngf-zh-gda"/>
                             <constraint firstItem="iPR-1a-L73" firstAttribute="width" secondItem="lw0-ej-kWa" secondAttribute="width" multiplier="0.8" id="Q3b-my-2ko"/>
                             <constraint firstItem="gyy-N2-M4u" firstAttribute="top" secondItem="iPR-1a-L73" secondAttribute="bottom" constant="8" id="Xa6-dP-nCF"/>
+                            <constraint firstItem="E3v-Qa-yRd" firstAttribute="centerX" secondItem="JPM-KK-RGH" secondAttribute="centerX" id="c5f-MX-wM8"/>
+                            <constraint firstItem="uiU-L0-xKs" firstAttribute="width" secondItem="E3v-Qa-yRd" secondAttribute="width" multiplier="0.9" id="c7c-ta-sWo"/>
                             <constraint firstItem="xzB-GP-gS4" firstAttribute="centerY" secondItem="JPM-KK-RGH" secondAttribute="centerY" multiplier="0.35" id="fql-9J-Xhp"/>
                             <constraint firstItem="xzB-GP-gS4" firstAttribute="leading" secondItem="JPM-KK-RGH" secondAttribute="leading" constant="20" id="g6U-ZU-8cV"/>
                             <constraint firstItem="gyy-N2-M4u" firstAttribute="width" secondItem="lw0-ej-kWa" secondAttribute="width" id="gEv-au-LS5"/>
+                            <constraint firstItem="uiU-L0-xKs" firstAttribute="height" secondItem="E3v-Qa-yRd" secondAttribute="height" multiplier="0.9" id="gSB-SP-adC"/>
                             <constraint firstItem="gyy-N2-M4u" firstAttribute="centerX" secondItem="JPM-KK-RGH" secondAttribute="centerX" id="wfQ-0a-wev"/>
                         </constraints>
                     </view>
@@ -179,6 +197,8 @@
                         <outlet property="ExpenseSheetYearNavLbl" destination="68T-tl-5ml" id="0nk-DJ-p8N"/>
                         <outlet property="ExpenseTotalLbl" destination="xzB-GP-gS4" id="SaJ-3o-046"/>
                         <outlet property="categoreySegmentControl" destination="iPR-1a-L73" id="I15-KB-W4G"/>
+                        <outlet property="emptyLbl" destination="uiU-L0-xKs" id="hk8-gP-8nN"/>
+                        <outlet property="emptyView" destination="E3v-Qa-yRd" id="Kay-Ey-lY7"/>
                         <outlet property="navBar" destination="SGK-WL-KFo" id="5pw-lY-TF9"/>
                         <outlet property="tableView" destination="gyy-N2-M4u" id="LAz-HG-uTS"/>
                         <segue destination="wTr-0a-MSo" kind="show" identifier="ToPrintPreviewVC" id="VE5-I0-Q7R"/>
@@ -186,7 +206,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H9q-bp-VpU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-294" y="1385"/>
+            <point key="canvasLocation" x="-294.20289855072468" y="1384.8214285714284"/>
         </scene>
         <!--Print Preview View Controller-->
         <scene sceneID="iyi-WV-12G">

@@ -16,6 +16,8 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var categoreySegmentControl: UISegmentedControl!
     @IBOutlet weak var navBar: UINavigationBar!
+    @IBOutlet weak var emptyView: UIView!
+    @IBOutlet weak var emptyLbl: UILabel!
     
     var expenses = [Expense]()
     var suppliesExpenses = [Expense]()
@@ -41,8 +43,6 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        
-        
         self.tableView.delegate = self
         self.tableView.dataSource = self
     }
@@ -76,26 +76,20 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
                 print("Error getting documents: \(err)")
             } else {
                 for document in querySnapshot!.documents {
-                    //print("\(document.documentID) => \(document.data())")
-                    // ----------------------------------------------------------------
+                    // Only adding expenses that have the settings year.
                     if (document.get("date") as! String).contains(self.expenseYear) {
                         self.expenses.append(Expense(vendorName: document.get("name") as! String, expenseDate: document.get("date") as! String, category: document.get("category") as! String, expenseAmount: document.get("amount") as! Int, uid: document.get("uid") as! String, docId: document.documentID))
+                        
+                        // Setting the total expenses
+                        self.totalExpenses += (document.get("amount") as! Int)
                     }
-                    
-                    // Setting the total expenses
-                    self.totalExpenses += (document.get("amount") as! Int)
                 }
-                
-                // Create a method for this...
-                let updatedTotal = self.totalExpenses
-                print("Total: \(String(updatedTotal))")
-                self.ExpenseTotalLbl.text = self.getValue(amount: updatedTotal)
+                self.updateTotal()
                 
                 // Trying to sort the expenses.
                 self.expenses = self.expenses.sorted(by: {
                     $0.expenseDate.compare($1.expenseDate) == .orderedDescending
                 })
-                
                 
                 self.queryExpenses(expenses: self.expenses)
                 
@@ -109,6 +103,10 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
     
     func setupElements() {
         
+        emptyView.isHidden = true
+        emptyView.layer.cornerRadius = 10
+        emptyLbl.isHidden = true
+        
         // Set the uid as long as it is passed from login or sign in
         if let userId = defaults.string(forKey: "uid") {
             uid = userId
@@ -116,6 +114,23 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
         
         if let defaultYear = defaults.string(forKey: "systemYear") {
             expenseYear = defaultYear
+        } else {
+            let date = Date()
+            let calendar = Calendar.current
+            expenseYear = String(calendar.component(.year, from: date))
+        }
+    }
+    
+    func updateTotal() {
+        // Create a method for this...
+        let updatedTotal = self.totalExpenses
+        print("Total: \(String(updatedTotal))")
+        self.ExpenseTotalLbl.text = self.getValue(amount: updatedTotal)
+        
+        if updatedTotal == 0 {
+            emptyView.isHidden = false
+            emptyLbl.isHidden = false
+            emptyLbl.text = "0 Expenses in \(expenseYear!)"
         }
     }
     
@@ -146,18 +161,18 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
         
         for expense in expenses {
             if expense.category == Constants.Category.supplies {
-                print(expense.expenseDate)
-                if expense.expenseDate.contains(expenseYear) {
-                    suppliesExpenses.append(expense)
-                }
+                //print(expense.expenseDate)
+                //if expense.expenseDate.contains(expenseYear) {
+                suppliesExpenses.append(expense)
+                //}
             } else if expense.category == Constants.Category.food {
-                if expense.expenseDate.contains(expenseYear) {
-                    foodExpenses.append(expense)
-                }
+                //if expense.expenseDate.contains(expenseYear) {
+                foodExpenses.append(expense)
+                //}
             } else if expense.category == Constants.Category.gas {
-                if expense.expenseDate.contains(expenseYear) {
-                    gasExpenses.append(expense)
-                }
+                //if expense.expenseDate.contains(expenseYear) {
+                gasExpenses.append(expense)
+                //}
             }
         }
     }
@@ -447,18 +462,18 @@ class YearlyExpenseViewController: UIViewController, ObservableObject, UITableVi
      }
      */
     
-
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
+    
+    // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
         
-     // Pass the selected object to the new view controller.
+        // Pass the selected object to the new view controller.
         guard let printPreviewVC = segue.destination as? PrintPreviewViewController else { return }
         printPreviewVC.passedExpenses = expenses
-     }
-     
+    }
+    
     
     /*
      // MARK: - Navigation

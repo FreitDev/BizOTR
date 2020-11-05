@@ -111,8 +111,6 @@ class AddNewViewController: UIViewController {
                     stringDate = formatter.string(from: date!)
                     print("name: \(name ?? ""), amount: \(amount), date: \(stringDate)", "category: \(category)")
                     
-                    //expense = Expense(vendorName: name, expenseDate: stringDate, category: category, expenseAmount: amount)
-                    
                     let expenseDict = [
                             "name" : name! as String,
                             "amount" : amount as Int,

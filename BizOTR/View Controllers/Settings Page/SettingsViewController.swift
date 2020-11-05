@@ -10,6 +10,7 @@ import UIKit
 import FirebaseAuth
 import Firebase
 import FirebaseFirestore
+import ProgressHUD
 
 class SettingsViewController: UIViewController {
     
@@ -27,7 +28,22 @@ class SettingsViewController: UIViewController {
         // Do any additional setup after loading the view.
         yearPickerView.dataSource = self
         yearPickerView.delegate = self
+        setupElements()
         getDataFromFirestore()
+    }
+    
+    func setupElements() {
+        if let yr = defaults.string(forKey: "systemYear") {
+            self.setDefaultValue(item: yr, inComponent: yearOptions.count)
+        } else {
+            print("systemYear not carried over!")
+        }
+    }
+    
+    func setDefaultValue(item: String, inComponent: Int) {
+        if let indexPosition = yearOptions.firstIndex(of: item) {
+            yearPickerView.selectRow(indexPosition, inComponent: inComponent, animated: true)
+        }
     }
     
     @IBAction func signoutBtnTapped(_ sender: Any) {
@@ -60,8 +76,6 @@ class SettingsViewController: UIViewController {
         do { try Auth.auth().signOut() }
         catch { print("already logged out") }
         
-        //UserDefaults.resetStandardUserDefaults()
-        let defaults = UserDefaults.standard
         defaults.set(false, forKey: "isLogin")
         
         // After user has successfully logged out
@@ -73,6 +87,8 @@ class SettingsViewController: UIViewController {
     
     
     @IBAction func settingSaveBtnTapped(_ sender: Any) {
+        
+        ProgressHUD.showSuccess("Saved!", image: .checkmark, interaction: false)
         print("Setting save button was tapped!")
         defaults.set(year, forKey: "systemYear")
     }
@@ -107,13 +123,5 @@ extension SettingsViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         
         year = yearOptions[row]
         defaults.set(year, forKey: "systemYear")
-        
-//        if row == 0 {
-//            year = "2018"
-//        } else if row == 1 {
-//            year = "2019"
-//        } else if row == 2 {
-//            year = "2020"
-//        }
     }
 }
